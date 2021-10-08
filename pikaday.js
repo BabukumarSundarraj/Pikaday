@@ -119,6 +119,15 @@
         return a.getTime() === b.getTime();
     },
 
+    currentTimeZoneDate = function(timeZone)
+    {
+        var date = new Date();
+        var dateStr = date.toLocaleString("en-US", {timeZone: timeZone});
+        var currentDate = dateStr.split(',');
+        var dateParts = currentDate[0].split('/');
+        return new Date(`${dateParts[2]}-${dateParts[0]}-${dateParts[1]}`);
+    },
+
     extend = function(to, from, overwrite)
     {
         var prop, hasProp;
@@ -291,7 +300,9 @@
         onDraw: null,
 
         // Enable keyboard input
-        keyboardInput: true
+        keyboardInput: true,
+
+        timeZone: 'Pacific/Kiritimati'
     },
 
 
@@ -1142,7 +1153,7 @@
         render: function(year, month, randId)
         {
             var opts   = this._o,
-                now    = new Date(),
+                now    = currentTimeZoneDate(opts.timeZone),
                 days   = getDaysInMonth(year, month),
                 before = new Date(year, month, 1).getDay(),
                 data   = [],
